@@ -64,19 +64,19 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 5; i++ )
         {
-            for (int j = 0; j < 5; j++)
+
+            if (!currentWord.ToLower().Contains(currentGuess[i].ToLower())) // Does the word contain the letter
+                continue;
+
+            if (currentGuess[i].ToLower() == currentWord.Substring(i, 1).ToLower())
             {
-                Debug.Log("Checking each substring of the Word");
-                if (currentGuess[i].ToLower() == currentWord.Substring(j, 1).ToLower())
-                {
-                    // TODO: Mark key green
-                    Debug.Log(currentGuess[i] + " exists in the word and is in the right place.");
-                }
-                else if (currentWord.ToLower().Contains(currentGuess[i].ToLower()))
-                {
-                    // TODO: Mark key yellow
-                    Debug.Log(currentGuess[i] + " exists in the word but is in the wrong place.");
-                }
+                Debug.Log(currentGuess[i] + " exists in and is in the right order.");
+                // TODO: Mark key green
+            }
+            else
+            {
+                Debug.Log(currentGuess[i] + " exists but in the wrong order.");
+                // TODO: Mark key yellow
             }
         }
 
