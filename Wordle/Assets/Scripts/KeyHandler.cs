@@ -27,8 +27,8 @@ public class KeyHandler : MonoBehaviour
         gameManager.DecrementGuess();
     }
 
-    public void ShowResult()
+    public void SubmitGuess()
     {
-        gameManager.ShowResult();
+        gameManager.CheckResult();
     }
 }
