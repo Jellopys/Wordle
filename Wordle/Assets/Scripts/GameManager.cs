@@ -4,29 +4,28 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GuessManager[] guessContainers;
+    [SerializeField] private GameObject restartButton;
+    [SerializeField] private WordList wordListNew;
+    private List<KeyHandler> buttons = new List<KeyHandler>();
+    private List<string> currentGuess = new List<string>();
+    private string selectedString;
+    private int currentContainer;
+    private int currentString;
+    private bool hasWon;
 
     public string[] wordList;
     public string currentWord;
 
-    [SerializeField] private GuessManager[] guessContainers;
-    private List<KeyHandler> buttons = new List<KeyHandler>();
-
-    private int currentString;
-    public List<string> currentGuess = new List<string>();
-    private string selectedString;
-
-    private int currentContainer;
-
     void Awake()
     {
         currentContainer = 0;
-        currentWord = wordList[Random.Range(0, wordList.Length - 1)];
-        // TODO: Choose a word
+        currentWord = wordList[Random.Range(0, wordList.Length)];
     }
 
     public void KeyInput(string input, KeyHandler button)
     {
-        if (currentString > 4)
+        if (currentString > 4 || hasWon == true)
             return;
 
         buttons.Add(button);
@@ -58,32 +57,50 @@ public class GameManager : MonoBehaviour
 
     public void CheckResult()
     {
-        guessContainers[currentContainer].ShowResult();
+        if (currentString < 5)
+        {
+            // TODO: give feedback to player that you need to type in a whole word.
+            return;
+        }
+        int correctLetters = 0;
 
-        // TODO: Should not be able to check result if all 5 keys has not been input
+        guessContainers[currentContainer].ShowResult();
 
         for (int i = 0; i < 5; i++ )
         {
 
             if (!currentWord.ToLower().Contains(currentGuess[i].ToLower())) // Does the word contain the letter
+            {
+                buttons[i].DisableButton();
+                guessContainers[currentContainer].ColorMarkLetter(2, i);
                 continue;
-
-            if (currentGuess[i].ToLower() == currentWord.Substring(i, 1).ToLower())
-            {
-                Debug.Log(currentGuess[i] + " exists in and is in the right order.");
-                // TODO: Mark key green
             }
-            else
+
+            if (currentGuess[i].ToLower() == currentWord.Substring(i, 1).ToLower()) // Letter exist in the right order
             {
-                Debug.Log(currentGuess[i] + " exists but in the wrong order.");
-                // TODO: Mark key yellow
+                guessContainers[currentContainer].ColorMarkLetter(0, i);
+                buttons[i].ColorButton();
+                correctLetters++;
+                continue;
+            }
+            else // Letter exist but in the wrong order
+            {
+                guessContainers[currentContainer].ColorMarkLetter(1, i); 
+                buttons[i].ColorButton();
+                continue;
             }
         }
 
-        // TODO: CHECK THE RESULT and compare to the chosen word
+        if (correctLetters == 5)
+        {
+            restartButton.SetActive(true);
+            Debug.Log("win");
+            hasWon = true;
+        }
 
-        // TODO: color the nodes
-        // TODO: Go to next guess Row
-        // TODO: Disable and enable the correct keys
+        currentContainer++;
+        currentString = 0;
+        currentGuess.Clear();
+        buttons.Clear();
     }
 }

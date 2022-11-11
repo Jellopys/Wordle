@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.SceneManagement;
 
 public class KeyHandler : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Button button;
+    [SerializeField] private Image img;
+    [SerializeField] private Color colorGreen;
 
     public void KeyClicked(string key)
     {
@@ -30,5 +32,18 @@ public class KeyHandler : MonoBehaviour
     public void SubmitGuess()
     {
         gameManager.CheckResult();
+    }
+
+    public void ColorButton()
+    {
+        if (img == null)
+            return;
+        
+        img.color = colorGreen;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
