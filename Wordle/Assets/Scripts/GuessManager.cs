@@ -44,28 +44,18 @@ public class GuessManager : MonoBehaviour
         return currentString;
     }
 
-    public void ShowResult()
-    {
-        // TODO: Animation
-    }
-
     public void ColorMarkLetter(int color, int i) // 0 = GREEN, 1 = YELLOW, 2 = DARK
     {
         colorBox[i].color = boxColors[color];
-        
-        // if (color == 0)
-        // {
-        //     colorBox[i].color = boxColors[color];
-        // }
-        // else if (color == 1)
-        // {
-        //     colorBox[i].color = colorYellow;
-        // }
-        // else
-        // {
-        //     colorBox[i].color = colorDark;
-        // }
-        
+
         // TODO: ANIMATION ON THE BOX
+    }
+
+    public void SetCorrectGuess(string s)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            strings[i].text = s.Substring(i,1).ToUpper();
+        }
     }
 }

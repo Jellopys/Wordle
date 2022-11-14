@@ -8,16 +8,17 @@ public class KeyHandler : MonoBehaviour
     [SerializeField] private Button button;
     [SerializeField] private Image img;
     [SerializeField] private Color colorGreen;
+    [SerializeField] private Color colorDark;
 
     public void KeyClicked(string key)
     {
         gameManager.KeyInput(key, this);
     }
 
-    public void DisableButton()
-    {
-        button.interactable = false;
-    }
+    // public void ColorButtonDark()
+    // {
+    //     img.color = colorDark;
+    // }
 
     public void ReEnableButton()
     {
@@ -26,20 +27,20 @@ public class KeyHandler : MonoBehaviour
 
     public void DecrementGuess()
     {
-        gameManager.DecrementGuess();
+        gameManager.DecrementInput();
     }
 
     public void SubmitGuess()
     {
-        gameManager.CheckResult();
+        gameManager.CheckSubmit();
     }
 
-    public void ColorButton()
+    public void ColorButton(bool doesExist)
     {
         if (img == null)
             return;
         
-        img.color = colorGreen;
+        img.color = doesExist ? colorGreen : colorDark;
     }
 
     public void RestartGame()
